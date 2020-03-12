@@ -1,0 +1,70 @@
+{% extends "picture/base.html" %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{% load static %}
+{% block main %}
+<div class="post">
+<div class="col-md-6">
+ {% for pos in contents %}
+    <div class="mx-auto">
+    <div class="card border-light shadow" style="width: 100rem;">
+        <div class="card-header border-top p-3"><h4 class="font-weight-bolder">{{pos.title}}<small>({{pos.upload_date}}):{% for tag in pos.tags %}<a href="{% url 'picture:tag' tag.tag.name %}">#{{ tag.tag.name }}</a>{% endfor %}</small></h4></div>
+        <div class="card-body"></div>
+        <div class="card-body"><h8>{{pos.text}}</h8></div>
+        <div class="card-body"></div>
+        <div class="card-footer border-bottom">
+        <a class="btn btn-outline-primary float-right" href="{% url 'picture:detail_post' pos.id %}" role="button">スレッドを表示</a>
+        </div>
+    </div>
+    </div>
+ {% endfor %}
+<nav aria-label="...">
+ <ul class="pagination">
+  {% if page.word != '' %}
+   <li class="page-item">
+    <a href="{% url page.type page.word 0 %}"> << </a>
+   </li>
+  {% else %}
+   <li class="page-item">
+    <a href="{% url page.type 0 %}"> << </a>
+   </li>
+  {% endif %}
+
+  {% for item in page.list %}
+    {% if item.valid %}
+      {% if item.num == page.current %}
+       <li class="page-item disable">
+        <a>{{ page.current|add:"1" }}</a>
+       </li>
+      {% else %}
+        {% if page.word != '' %}
+         <li class="page-item">
+          <a href="{% url page.type page.word item.num %}">{{ item.num|add:"1" }}</a>
+         </li>
+        {% else %}
+         <li class="page-item">
+          <a href="{% url page.type item.num %}">{{ item.num|add:"1" }}</a>
+         </li>
+        {% endif %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+
+  {% if page.word != '' %}
+   <li class="page-item">
+    <a href="{% url page.type page.word page.max %}"> >> </a>
+   </li>
+  {% else %}
+    <li class="page-item">
+     <a href="{% url page.type page.max %}"> >> </a>
+    </li>
+  {% endif %}
+ </ul>
+</nav>
+</div>
+</div>
+
+
+{% endblock %}
+

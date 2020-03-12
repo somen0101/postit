@@ -1,0 +1,13 @@
+ /* フッター */
+ body{
+       padding-top: 80px;
+       }
+ .post{
+      padding-left: 210px;
+}
+ .form-group{
+             padding-right: 50px;
+ }
+ .btn btn-primary btn-lg{
+             padding-left: 50px;
+ }

@@ -1,0 +1,54 @@
+{% extends "picture/base.html" %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load postfilters %}
+{% block main %}
+<div class="col-md-9  col-md-offset-2">
+        <div class="ui segment">
+            <div class="card">
+                <div class="card-header shadow"><h3 style="text-align: center;">{{topic.title}}</h3></div>
+                <p class="card-body" style="text-align: center; font-size: normal;">{{topic.text}}({{topic.upload_date}}){% for tag in post_tags %}<a href="{% url 'picture:tag' tag.tag.name %}">#{{tag.tag.name}}</a>{% endfor %}</p>
+            </div>
+        </div>
+        <!--コメント表示-->
+        <div class="ui segment">
+        <div class="card shadow">
+            {% if comment_list %}
+            {% for comment in comment_list %}
+            <li class="list-group-item shadow">
+                <p style="font-size: large;">{{comment.no}}. {{comment.user_name}}({{comment.created}})<br>{{comment.message | comment_filter | safe}}</p>
+            </li>
+            {% endfor %}
+            {% else %}
+            <div class="card-body"><p style="font-size: large; text-align: center;">まだコメントはありません</p></div>
+            {% endif %}
+        </div>
+        </div>
+        <!--//コメント表示-->
+        <!--コメント投稿-->
+                <form class="form" action="" method="POST">
+                <div class="card">
+                <div class="card-header shadow">
+                <h4>コメント投稿</h4>
+                </div>
+                </div>
+                <div class="card shadow border rounded">
+                {% csrf_token %}
+                <div class="form-group shadow card-header">
+                <div class="">{{form.user_name.label_tag}}{{form.user_name|add_class:"form-control"}}</div>
+                </div>
+                <div class="form-group border-top shadow card-header">
+                <div class="">{{form.message.label_tag}}{{form.message|add_class:"form-control"}}</div>
+                </div>
+                </div>
+                <button class="btn btn-success shadow" type="submit">コメント投稿</button>
+                </form>
+        <!--//コメント投稿-->
+    </div>
+
+</div>
+</div>
+{% endblock %}
