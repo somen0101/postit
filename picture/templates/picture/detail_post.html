@@ -10,7 +10,7 @@
         <div class="ui segment">
             <div class="card">
                 <div class="card-header shadow"><h3 style="text-align: center;">{{topic.title}}</h3></div>
-                <p class="card-body" style="text-align: center; font-size: normal;">{{topic.text}}({{topic.upload_date}}){% for tag in post_tags %}<a href="{% url 'picture:tag' tag.tag.name %}">#{{tag.tag.name}}</a>{% endfor %}</p>
+                <p class="card-body" style="text-align: center; font-size: normal;">{{topic.text| comment_filter | safe}}({{topic.upload_date}}){% for tag in post_tags %}<a href="{% url 'picture:tag' tag.tag.name %}">#{{tag.tag.name}}</a>{% endfor %}</p>
             </div>
         </div>
         <!--コメント表示-->
