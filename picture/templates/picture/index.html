@@ -3,6 +3,7 @@
 {% bootstrap_css %}
 {% bootstrap_javascript jquery='full' %}
 {% load static %}
+{% load postfilters %}
 {% block main %}
 <div class="post">
 <div class="col-md-6">
@@ -11,7 +12,7 @@
     <div class="card border-light shadow" style="width: 100rem;">
         <div class="card-header border-top p-3"><h4 class="font-weight-bolder">{{pos.title}}<small>({{pos.upload_date}}):{% for tag in pos.tags %}<a href="{% url 'picture:tag' tag.tag.name %}">#{{ tag.tag.name }}</a>{% endfor %}</small></h4></div>
         <div class="card-body"></div>
-        <div class="card-body"><h8>{{pos.text}}</h8></div>
+        <div class="card-body"><h8>{{pos.text| comment_filter | safe}}</h8></div>
         <div class="card-body"></div>
         <div class="card-footer border-bottom">
         <a class="btn btn-outline-primary float-right" href="{% url 'picture:detail_post' pos.id %}" role="button">スレッドを表示</a>
