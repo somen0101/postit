@@ -78,25 +78,23 @@ def topic_create(request):
         post_form = PostForm(request.POST)
         if post_form.is_valid():
             post = Post()
-            post_tag = PostTagName()
-            post_tag_list = PostTagList()
+            #post_tag = PostTagName()
+            #post_tag_list = PostTagList()
             cleaned_data = post_form.cleaned_data
             post.title = cleaned_data['title']
             post.text = cleaned_data['text']
             post.upload_date = timezone.now()
-            tags = PostTagName.objects.filter(name=request.POST["tag"])
-            if len(tags) == 0:
-                post.save()
-                post_tag.name = cleaned_data['tag']
-                post_tag.save()
-                post_tag_list.content = post
-                post_tag_list.tag = post_tag
-                post_tag_list.save()
-            else:
-                post.save()
-                post_tag_list.content = post
-                post_tag_list.tag = PostTagName.objects.filter(name=cleaned_data['tag']).get()
-                post_tag_list.save()
+            all_tags = request.POST["tag"]
+            all_tags_split = str(all_tags).split("#")
+            del all_tags_split[0]
+            post.save()
+            for t in all_tags_split:
+                tags = PostTagName.objects.filter(name=t)
+                if len(tags) == 0:
+                   PostTagName.objects.create(name=t)
+                   PostTagList.objects.create(content=post, tag=PostTagName.objects.filter(name=t).get())
+                else:
+                   PostTagList.objects.create(content=post, tag=PostTagName.objects.filter(name=t).get())
 
         return redirect(reverse_lazy('picture:index'))
 

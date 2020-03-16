@@ -9,7 +9,7 @@
 <div class="col-md-6">
  {% for pos in contents %}
     <div class="mx-auto">
-    <div class="card border-light shadow" style="width: 100rem;">
+    <div class="card border-light shadow" style="width: 102rem; margin-left: 11.5px;">
         <div class="card-header border-top p-3"><h4 class="font-weight-bolder">{{pos.title}}<small>({{pos.upload_date}}):{% for tag in pos.tags %}<a href="{% url 'picture:tag' tag.tag.name %}">#{{ tag.tag.name }}</a>{% endfor %}</small></h4></div>
         <div class="card-body"></div>
         <div class="card-body"><h8>{{pos.text| comment_filter | safe}}</h8></div>
@@ -21,7 +21,7 @@
     </div>
  {% endfor %}
 <nav aria-label="...">
- <ul class="pagination">
+ <ul class="pagination" style="margin-left: 11.4px;">
   {% if page.word != '' %}
    <li class="page-item">
     <a href="{% url page.type page.word 0 %}"> << </a>

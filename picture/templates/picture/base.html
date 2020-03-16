@@ -38,7 +38,7 @@
     </div>
   </div>
 </nav>
-<div class="float-left position-fixed" style="width: 20rem; margin-left: 12.5px;">
+<div class="float-left position-fixed" style="width: 20rem; margin-left: 17px;">
   <a class="btn btn-success btn-lg btn-block shadow" href="{% url 'picture:create_post' %}" role="button">スレッド作成</a>
   <br>
   <h4>関連タグ<small>(登録数top10)</small></h4>
@@ -48,6 +48,8 @@
   {% endfor %}
   </ul>
 </div>
+
+
 {% block main %}
 {% endblock %}
 </body>
