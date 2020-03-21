@@ -122,7 +122,7 @@ class TopicAndCommentView(FormView):
         ctx['post_tags'] = PostTagList.objects.filter(content_id=self.kwargs['pk'])
         ctx['tags'] = tags
         ctx['topic'] = Post.objects.get(id=self.kwargs['pk'])
-        ctx['comment_list'] = PostComment.objects.filter(topic_id=self.kwargs['pk']).annotate(vote_count=Count('vote')).order_by('no')
+        ctx['comment_list'] = PostComment.objects.filter(topic_id=self.kwargs['pk']).order_by('no')
         return ctx
 
 
