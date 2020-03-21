@@ -23,7 +23,7 @@ def construct_page(request, all_content_ids, page_contents, current_page, max_pa
         contents.append(tmp_dict)
 
 
-    tag_cnt = PostTagList.objects.filter(content__in=all_content_ids).values('tag').annotate(tag_count=Count('tag')).order_by('-tag_count')[:10]
+    tag_cnt = PostTagList.objects.filter(content__in=all_content_ids).values('tag').annotate(tag_count=Count('tag')).order_by('-tag_count')[:15]
     tag_names = [PostTagName.objects.filter(id = item.get('tag'))[0] for item in tag_cnt]
     tags = [{'name': tag_names[i].name, 'count': tag_cnt[i]["tag_count"]} for i in range(len(tag_names))]
 
@@ -116,13 +116,13 @@ class TopicAndCommentView(FormView):
     def get_context_data(self):
         ctx = super().get_context_data()
 
-        tag_cnt = PostTagList.objects.filter(content__in=PostTagList.objects.values('content_id')).values('tag').annotate(tag_count=Count('tag')).order_by('-tag_count')[:10]
+        tag_cnt = PostTagList.objects.filter(content__in=PostTagList.objects.values('content_id')).values('tag').annotate(tag_count=Count('tag')).order_by('-tag_count')[:15]
         tag_names = [PostTagName.objects.filter(id=item.get('tag'))[0] for item in tag_cnt]
         tags = [{'name': tag_names[i].name, 'count': tag_cnt[i]["tag_count"]} for i in range(len(tag_names))]
         ctx['post_tags'] = PostTagList.objects.filter(content_id=self.kwargs['pk'])
         ctx['tags'] = tags
         ctx['topic'] = Post.objects.get(id=self.kwargs['pk'])
-        ctx['comment_list'] = PostComment.objects.filter(topic_id=self.kwargs['pk']).order_by('no')
+        ctx['comment_list'] = PostComment.objects.filter(topic_id=self.kwargs['pk']).annotate(vote_count=Count('vote')).order_by('no')
         return ctx
 
 
